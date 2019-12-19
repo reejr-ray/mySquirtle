@@ -1,0 +1,273 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema pokedex
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema pokedex
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `pokedex` DEFAULT CHARACTER SET utf8 ;
+USE `pokedex` ;
+
+-- -----------------------------------------------------
+-- Table `pokedex`.`types`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pokedex`.`types` (
+  `type_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`type_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pokedex`.`pokemon`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pokedex`.`pokemon` (
+  `pokemon_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `description` VARCHAR(256) NULL,
+  `height` DECIMAL(8,2) NULL,
+  `weight` DECIMAL(8,2) NULL,
+  `progress_index` INT NOT NULL,
+  `type_1_id` INT NULL,
+  `type_2_id` INT NULL,
+  PRIMARY KEY (`pokemon_id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
+  INDEX `primary_type_idx` (`type_1_id` ASC) VISIBLE,
+  INDEX `secondary_type_idx` (`type_2_id` ASC) VISIBLE,
+  CONSTRAINT `primary_type`
+    FOREIGN KEY (`type_1_id`)
+    REFERENCES `pokedex`.`types` (`type_id`)
+    ON DELETE SET NULL
+    ON UPDATE RESTRICT,
+  CONSTRAINT `secondary_type`
+    FOREIGN KEY (`type_2_id`)
+    REFERENCES `pokedex`.`types` (`type_id`)
+    ON DELETE SET NULL
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pokedex`.`type_effectiveness`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pokedex`.`type_effectiveness` (
+  `type_effectiveness_id` INT NOT NULL AUTO_INCREMENT,
+  `attacking_type` INT NOT NULL,
+  `defending_type` INT NOT NULL,
+  `effectiveness` DECIMAL(2,1) NOT NULL,
+  PRIMARY KEY (`type_effectiveness_id`),
+  INDEX `attacker_idx` (`attacking_type` ASC) VISIBLE,
+  INDEX `defender_idx` (`defending_type` ASC) VISIBLE,
+  CONSTRAINT `attacker`
+    FOREIGN KEY (`attacking_type`)
+    REFERENCES `pokedex`.`types` (`type_id`)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
+  CONSTRAINT `defender`
+    FOREIGN KEY (`defending_type`)
+    REFERENCES `pokedex`.`types` (`type_id`)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pokedex`.`locations`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pokedex`.`locations` (
+  `location_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `progress_index` INT NOT NULL DEFAULT 1,
+  PRIMARY KEY (`location_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pokedex`.`poke_locations`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pokedex`.`poke_locations` (
+  `poke_location_id` INT NOT NULL AUTO_INCREMENT,
+  `pokemon_id` INT NOT NULL,
+  `location_id` INT NOT NULL,
+  PRIMARY KEY (`poke_location_id`),
+  INDEX `pokemon_idx` (`pokemon_id` ASC) VISIBLE,
+  INDEX `location_idx` (`location_id` ASC) VISIBLE,
+  CONSTRAINT `pokemon`
+    FOREIGN KEY (`pokemon_id`)
+    REFERENCES `pokedex`.`pokemon` (`pokemon_id`)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
+  CONSTRAINT `pokemon's_location`
+    FOREIGN KEY (`location_id`)
+    REFERENCES `pokedex`.`locations` (`location_id`)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pokedex`.`evolution_chains`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pokedex`.`evolution_chains` (
+  `evolution_chain_id` INT NOT NULL AUTO_INCREMENT,
+  `chain_1_pokemon_id` INT NOT NULL,
+  `chain_2_pokemon_id` INT NULL,
+  `chain_3_pokemon_id` INT NULL,
+  `condition_1` VARCHAR(45) NULL,
+  `condition_2` VARCHAR(45) NULL,
+  PRIMARY KEY (`evolution_chain_id`),
+  INDEX `chain_1_idx` (`chain_1_pokemon_id` ASC) VISIBLE,
+  INDEX `chain_2_idx` (`chain_2_pokemon_id` ASC) VISIBLE,
+  INDEX `chain_3_idx` (`chain_3_pokemon_id` ASC) VISIBLE,
+  CONSTRAINT `chain_1`
+    FOREIGN KEY (`chain_1_pokemon_id`)
+    REFERENCES `pokedex`.`pokemon` (`pokemon_id`)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
+  CONSTRAINT `chain_2`
+    FOREIGN KEY (`chain_2_pokemon_id`)
+    REFERENCES `pokedex`.`pokemon` (`pokemon_id`)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
+  CONSTRAINT `chain_3`
+    FOREIGN KEY (`chain_3_pokemon_id`)
+    REFERENCES `pokedex`.`pokemon` (`pokemon_id`)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pokedex`.`gym_badges`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pokedex`.`gym_badges` (
+  `gym_badge_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `description` VARCHAR(256) NULL,
+  PRIMARY KEY (`gym_badge_id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pokedex`.`trainers`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pokedex`.`trainers` (
+  `trainer_id` INT NOT NULL AUTO_INCREMENT,
+  `type_id` INT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `progress_index` INT NOT NULL DEFAULT 1,
+  `rival_index` INT NOT NULL DEFAULT 0,
+  `gym_badge_id` INT NULL,
+  PRIMARY KEY (`trainer_id`),
+  INDEX `type_idx` (`type_id` ASC) VISIBLE,
+  INDEX `gym_badge_idx` (`gym_badge_id` ASC) VISIBLE,
+  CONSTRAINT `type`
+    FOREIGN KEY (`type_id`)
+    REFERENCES `pokedex`.`types` (`type_id`)
+    ON DELETE SET NULL
+    ON UPDATE RESTRICT,
+  CONSTRAINT `gym_badge`
+    FOREIGN KEY (`gym_badge_id`)
+    REFERENCES `pokedex`.`gym_badges` (`gym_badge_id`)
+    ON DELETE SET NULL
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pokedex`.`teams`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pokedex`.`teams` (
+  `team_id` INT NOT NULL AUTO_INCREMENT,
+  `trainer_id` INT NOT NULL,
+  `slot_1_pokemon_id` INT NULL,
+  `slot_1_level` INT NULL,
+  `slot_2_pokemon_id` INT NULL,
+  `slot_2_level` INT NULL,
+  `slot_3_pokemon_id` INT NULL,
+  `slot_3_level` INT NULL,
+  `slot_4_pokemon_id` INT NULL,
+  `slot_4_level` INT NULL,
+  `slot_5_pokemon_id` INT NULL,
+  `slot_5_level` INT NULL,
+  `slot_6_pokemon_id` INT NULL,
+  `slot_6_level` INT NULL,
+  PRIMARY KEY (`team_id`),
+  INDEX `owner_idx` (`trainer_id` ASC) VISIBLE,
+  INDEX `slot_1_idx` (`slot_1_pokemon_id` ASC) VISIBLE,
+  INDEX `slot_2_idx` (`slot_2_pokemon_id` ASC) VISIBLE,
+  INDEX `slot_3_idx` (`slot_3_pokemon_id` ASC) VISIBLE,
+  INDEX `slot_4_idx` (`slot_4_pokemon_id` ASC) VISIBLE,
+  INDEX `slot_5_idx` (`slot_5_pokemon_id` ASC) VISIBLE,
+  INDEX `slot_6_idx` (`slot_6_pokemon_id` ASC) VISIBLE,
+  CONSTRAINT `owner`
+    FOREIGN KEY (`trainer_id`)
+    REFERENCES `pokedex`.`trainers` (`trainer_id`)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
+  CONSTRAINT `slot_1`
+    FOREIGN KEY (`slot_1_pokemon_id`)
+    REFERENCES `pokedex`.`pokemon` (`pokemon_id`)
+    ON DELETE SET NULL
+    ON UPDATE RESTRICT,
+  CONSTRAINT `slot_2`
+    FOREIGN KEY (`slot_2_pokemon_id`)
+    REFERENCES `pokedex`.`pokemon` (`pokemon_id`)
+    ON DELETE SET NULL
+    ON UPDATE RESTRICT,
+  CONSTRAINT `slot_3`
+    FOREIGN KEY (`slot_3_pokemon_id`)
+    REFERENCES `pokedex`.`pokemon` (`pokemon_id`)
+    ON DELETE SET NULL
+    ON UPDATE RESTRICT,
+  CONSTRAINT `slot_4`
+    FOREIGN KEY (`slot_4_pokemon_id`)
+    REFERENCES `pokedex`.`pokemon` (`pokemon_id`)
+    ON DELETE SET NULL
+    ON UPDATE RESTRICT,
+  CONSTRAINT `slot_5`
+    FOREIGN KEY (`slot_5_pokemon_id`)
+    REFERENCES `pokedex`.`pokemon` (`pokemon_id`)
+    ON DELETE SET NULL
+    ON UPDATE RESTRICT,
+  CONSTRAINT `slot_6`
+    FOREIGN KEY (`slot_6_pokemon_id`)
+    REFERENCES `pokedex`.`pokemon` (`pokemon_id`)
+    ON DELETE SET NULL
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pokedex`.`trainer_locations`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pokedex`.`trainer_locations` (
+  `trainer_location_id` INT NOT NULL AUTO_INCREMENT,
+  `trainer_id` INT NOT NULL,
+  `location_id` INT NOT NULL,
+  PRIMARY KEY (`trainer_location_id`),
+  INDEX `trainer_idx` (`trainer_id` ASC) VISIBLE,
+  INDEX `location_idx` (`location_id` ASC) VISIBLE,
+  CONSTRAINT `trainer`
+    FOREIGN KEY (`trainer_id`)
+    REFERENCES `pokedex`.`trainers` (`trainer_id`)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT,
+  CONSTRAINT `trainer's_location`
+    FOREIGN KEY (`location_id`)
+    REFERENCES `pokedex`.`locations` (`location_id`)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

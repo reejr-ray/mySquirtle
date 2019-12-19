@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ 	<title>Pokemon</title>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='display.css') }}">
+
+   <style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+<script type="text/javascript">
+	function showResult() {
+		document.getElementById('display').innerHTML = document.getElementById("user_select").value;
+	}
+</script>
+ </head>
+ <body> 
+    <!--<input type='text' name='query' id='query'>
+    <button type='button' id='search'>Search</button>
+    <div id='results'></div>-->
+    	<ul>
+	  <li><a class="active" href="/">mySQuirtLe</a></li>
+	  <li><a href="/About">About</a></li>
+	</ul>
+<div class="row">
+	<div class="column" style="background-color: #aaa;">
+	    <select name="cars" id="user_select">
+	    	{%for i in range(0, len)%}
+	    	<option value="{{result[i]}}">{{result[i]}}</option>
+			{%endfor%}
+
+		  </select>
+	  <br><br>
+	  <input type="submit" onclick="showResult();">
+	</div>
+	<div class="column" style="background-color: #bbb;">
+		column2
+		<p><span id='display'></span></p>
+	</div>
+</div>
+ </body>
+ <!--
+  <script> 
+    $(document).ready(function() {
+     $('#search').click(function() {
+       var text = $('#query').val();
+        $.ajax({
+        url: "/search",
+        type: "get",
+        data: {query: text},
+        success: function(response) {
+        $("#results").html(response.html);
+       },
+       error: function(xhr) {
+        //Do Something to handle error
+       }
+     });
+   });
+  });
+  </script>
+-->
+</html>

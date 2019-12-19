@@ -1,0 +1,142 @@
+--
+-- types INSERT 3 tuple
+-- 
+INSERT INTO types(type_id, name) VALUES (3, 'Water');
+INSERT INTO types(type_id, name) VALUES (5, 'Grass');
+INSERT INTO types(type_id, name) VALUES (13, 'Rock');
+INSERT INTO types (type_id, name) VALUES (1, 'Normal'), (2, 'Fire'), (4, 'Fighting');
+
+--
+-- type_effectiveness INSERT 3 tuple
+--
+INSERT INTO type_effectiveness(type_effectiveness_id, attacking_type, defending_type, effectiveness) VALUES (1, 3, 5, 0.5);
+INSERT INTO type_effectiveness(type_effectiveness_id, attacking_type, defending_type, effectiveness) VALUES (2, 5, 13, 2);
+INSERT INTO type_effectiveness(type_effectiveness_id, attacking_type, defending_type, effectiveness)  VALUES (3, 13, 3, 2);
+
+--
+-- gym_badges INSERT 3 tutple
+--
+INSERT INTO gym_badges (gym_badge_id, name, description) VALUES (1, 'Pewter City Gym', 'Rock');
+INSERT INTO gym_badges (gym_badge_id, name, description) VALUES (2, 'Cerulean City Gym', 'Water');
+INSERT INTO gym_badges (gym_badge_id, name, description) VALUES (3, 'Vermillion City Gym', 'Electric');
+
+--
+-- locations INSERT 3 tutple
+--
+INSERT INTO locations(location_id, name, progress_index) VALUES (1, 'Route 1', 0);
+INSERT INTO locations(location_id, name, progress_index) VALUES (2, 'Route 2', 0);
+INSERT INTO locations(location_id, name, progress_index) VALUES (3, 'Viridian Forest', 0);
+
+--
+-- pokemon INSERT 3 tuple
+--
+INSERT INTO pokemon(pokemon_id, name, description, height, weight, progress_index, type_1_id, type_2_id) VALUES (1, 'Bulbasaur', 'Received from a girl in Cerulean City if Pikachu\'s friendship is high enough', 0.70, 6.90, 2, 5, NULL);    
+INSERT INTO pokemon(pokemon_id, name, description, height, weight, progress_index, type_1_id, type_2_id) VALUES (2, 'Ivysaur', 'The bulb on its back grows by drawing energy. It gives off an aroma when it is ready to bloom.', 1.0, 13, 2, 5, NULL);
+INSERT INTO pokemon(pokemon_id, name, description, height, weight, progress_index, type_1_id, type_2_id) VALUES (3, 'Venasaur', 'The flower on its back catches the sun\'s rays. The sunlight is then absorbed and used for energy.', 2.0, 100, 2, 5, NULL);    
+INSERT INTO pokemon(pokemon_id, name, description, height, weight, progress_index, type_1_id, type_2_id) VALUES (4, 'Charmander', 'Small guy.', 0.70, 6.90, 2, 5, NULL);    
+INSERT INTO pokemon(pokemon_id, name, description, height, weight, progress_index, type_1_id, type_2_id) VALUES (5, 'Charmeleon', 'Red guy.', 1.0, 13, 2, 5, NULL);
+INSERT INTO pokemon(pokemon_id, name, description, height, weight, progress_index, type_1_id, type_2_id) VALUES (6, 'Charizard', 'Big red guy.', 2.0, 100, 2, 5, NULL);    
+INSERT INTO pokemon(pokemon_id, name, description, height, weight, progress_index, type_1_id, type_2_id) VALUES (7, 'Squirtle', 'Small blue guy.', 0.70, 6.90, 2, 5, NULL);    
+INSERT INTO pokemon(pokemon_id, name, description, height, weight, progress_index, type_1_id, type_2_id) VALUES (8, 'Wartortle', 'Medium blue guy.', 1.0, 13, 2, 5, NULL);
+INSERT INTO pokemon(pokemon_id, name, description, height, weight, progress_index, type_1_id, type_2_id) VALUES (9, 'Blastoise', 'Big blue turtle guy.', 2.0, 100, 2, 5, NULL);    
+  
+--
+-- evolution_chains table INSERT 3 tutple
+--
+INSERT INTO evolution_chains (evolution_chain_id, chain_1_pokemon_id, chain_2_pokemon_id, chain_3_pokemon_id, condition_1, condition_2)
+VALUES (1, 1, 2, 3, NULL, NULL);
+INSERT INTO evolution_chains (evolution_chain_id, chain_1_pokemon_id, chain_2_pokemon_id, chain_3_pokemon_id, condition_1, condition_2)
+VALUES (2, 4, 5, 6, NULL, NULL);
+INSERT INTO evolution_chains (evolution_chain_id, chain_1_pokemon_id, chain_2_pokemon_id, chain_3_pokemon_id, condition_1, condition_2)
+VALUES (3, 7, 8, 9, NULL, NULL);
+  
+--
+-- trainers INSERT 3 tuple
+--
+INSERT INTO trainers(trainer_id, type_id, name, progress_index, rival_index, gym_badge_id) VALUES
+(1, 3, 'Bug Catcher', 0, 0, 1);
+INSERT INTO trainers(trainer_id, type_id, name, progress_index, rival_index, gym_badge_id) VALUES
+(2, 5, 'Bug Catcher', 0, 0, 1);
+INSERT INTO trainers(trainer_id, type_id, name, progress_index, rival_index, gym_badge_id) VALUES
+(3, 13, 'Bug Catcher', 0, 0, 1);
+  
+--
+-- teams INSERT 3 tuple
+--
+INSERT INTO teams(team_id, trainer_id, slot_1_pokemon_id, slot_1_level, slot_2_pokemon_id, slot_2_level, slot_3_pokemon_id, slot_3_level, slot_4_pokemon_id, slot_4_level, slot_5_pokemon_id, slot_5_level, slot_6_pokemon_id, slot_6_level)
+VALUES (1, 1, 1, 7, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO teams(team_id, trainer_id, slot_1_pokemon_id, slot_1_level, slot_2_pokemon_id, slot_2_level, slot_3_pokemon_id, slot_3_level, slot_4_pokemon_id, slot_4_level, slot_5_pokemon_id, slot_5_level, slot_6_pokemon_id, slot_6_level)
+VALUES (2, 2, 3, 7, 4, 7, 5, 7, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO teams(team_id, trainer_id, slot_1_pokemon_id, slot_1_level, slot_2_pokemon_id, slot_2_level, slot_3_pokemon_id, slot_3_level, slot_4_pokemon_id, slot_4_level, slot_5_pokemon_id, slot_5_level, slot_6_pokemon_id, slot_6_level)
+VALUES (3, 3, 6, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    
+--
+-- poke_locations INSERT 3 tuple
+--
+INSERT INTO poke_locations (poke_location_id, pokemon_id, location_id) VALUES (1, 1, 1);
+INSERT INTO poke_locations (poke_location_id, pokemon_id, location_id) VALUES (2, 4, 1);
+INSERT INTO poke_locations (poke_location_id, pokemon_id, location_id) VALUES (3, 7, 1);
+
+--
+-- Tuple deletions
+--
+-- Delete PK from pokemon, FK in poke_locations, evolution_chains, and teams
+DELETE FROM pokemon WHERE pokemon_id = 1;
+
+-- Delete PK from locations, FK in poke_locations, and trainer_locations
+DELETE FROM locations WHERE location_id = 1;
+
+-- Delete PK from gym_badges, FK in trainers
+DELETE FROM gym_badges WHERE gym_badge_id = 1;
+
+-- Delete PK from trainers, FK in types, gym_badges
+DELETE FROM trainers WHERE trainer_id = 1;
+
+-- Delete PK from types, FK in pokemon, type_effectiveness, and trainers
+DELETE FROM types WHERE type_id = 5;
+
+--
+-- Select queries
+--
+-- SELECT trainer -> team (many -> one)
+-- Display the name of trainers with a Bulbasaur in any of their teams
+SELECT trainers.name
+	FROM trainers, teams, pokemon
+    WHERE (teams.trainer_id = trainers.trainer_id) AND (pokemon.name = 'Bulbasaur')
+		AND (teams.slot_1_pokemon_id = pokemon.pokemon_id OR teams.slot_2_pokemon_id = pokemon.pokemon_id
+		OR teams.slot_3_pokemon_id = pokemon.pokemon_id OR teams.slot_4_pokemon_id = pokemon.pokemon_id
+        OR teams.slot_5_pokemon_id = pokemon.pokemon_id OR teams.slot_6_pokemon_id = pokemon.pokemon_id);
+        
+--
+-- SELECT Pokemon -> Location (many -> one)
+-- Display the names of all Pokemon found in Route 1
+SELECT pokemon.name
+	FROM pokemon, poke_locations, locations
+    WHERE (pokemon.pokemon_id = poke_locations.pokemon_id) AND (poke_locations.location_id = locations.location_id)
+		AND (locations.name = 'Route 1');
+        
+--
+-- SELECT Type -> Type (recursive)
+-- Display the names of all types that a Grass is strong against
+SELECT d.name
+	FROM type_effectiveness
+    JOIN types a ON (type_effectiveness.attacking_type = a.type_id AND a.name = 'Grass')
+    JOIN types d ON (type_effectiveness.defending_type = d.type_id)
+    WHERE (type_effectiveness.effectiveness = 2);
+
+--
+-- Update queries
+-- MAY REQUIRE SAFE UPDATE (SET SQL_SAFE_UPDATES = 0;)
+--
+-- pokemon_id to teams ONE TO MANY
+UPDATE teams SET slot_1_pokemon_id = 5, slot_1_level = 99, slot_2_pokemon_id = 6, slot_2_level = 99, 
+slot_3_pokemon_id = 7, slot_3_level = 99, slot_4_pokemon_id = 8, slot_4_level = 99 WHERE team_id = 2;
+
+-- trainer to team MANY TO ONE
+UPDATE trainers, teams, pokemon SET trainers.name = 'Updated Trainer' WHERE (teams.trainer_id = trainers.trainer_id) AND (pokemon.name = 'Charmeleon')
+		AND (teams.slot_1_pokemon_id = pokemon.pokemon_id OR teams.slot_2_pokemon_id = pokemon.pokemon_id
+		OR teams.slot_3_pokemon_id = pokemon.pokemon_id OR teams.slot_4_pokemon_id = pokemon.pokemon_id
+        OR teams.slot_5_pokemon_id = pokemon.pokemon_id OR teams.slot_6_pokemon_id = pokemon.pokemon_id);
+-- type to type RECURSIVE
+UPDATE types, type_effectiveness SET effectiveness = 0.5 WHERE types.name = 'Water' AND 
+(type_effectiveness.defending_type=types.type_id);
